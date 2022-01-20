@@ -19,6 +19,7 @@ import org.quarkus.issues.entity.Issue;
 public class IssueController {
 
     @GET
+    @Path("/get_issues")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
         List<Issue> issues = Issue.listAll();
@@ -26,7 +27,7 @@ public class IssueController {
     }
 
     @GET
-    @Path("{id}")
+    @Path("/get_issue/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@PathParam("id") Long id) {
         return Issue.findByIdOptional(id)
@@ -34,15 +35,8 @@ public class IssueController {
             .orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("issue/{issue}")
-    public Response getByIssue(@PathParam("issue") String issue) {
-        List<Issue> issues =  Issue.list("SELECT m FROM Issue m WHERE m.issue = ?1", issue);
-        return Response.ok(issues).build();
-    }
-
     @POST
+    @Path("/insert_issue")
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,4 +47,16 @@ public class IssueController {
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
+
+/*
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("issue/{issue}")
+    public Response getByIssue(@PathParam("issue") String issue) {
+        List<Issue> issues =  Issue.list("SELECT m FROM Issue m WHERE m.issue = ?1", issue);
+        return Response.ok(issues).build();
+    }
+*/
+
+
 }
