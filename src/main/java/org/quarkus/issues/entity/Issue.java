@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+//@Cacheable?
 @Entity
-@Cacheable
 public class Issue extends PanacheEntity {
     
     public String issue;
