@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.quarkus.issues.entity.Issue;
 
-@Path("/hello")
+@Path("/issues")
 public class IssueController {
 
     @GET
@@ -47,16 +47,4 @@ public class IssueController {
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
-
-/*
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("issue/{issue}")
-    public Response getByIssue(@PathParam("issue") String issue) {
-        List<Issue> issues =  Issue.list("SELECT m FROM Issue m WHERE m.issue = ?1", issue);
-        return Response.ok(issues).build();
-    }
-*/
-
-
 }
