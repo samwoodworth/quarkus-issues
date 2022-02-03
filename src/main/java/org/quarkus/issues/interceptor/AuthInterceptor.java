@@ -6,6 +6,7 @@ import io.vertx.core.http.HttpServerResponse;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +39,10 @@ public class AuthInterceptor implements ContainerRequestFilter {
             }
 
             System.out.println("Responsebody is: " + responseBody);
-        }
 
+            if (responseBody.equals("false")) {
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            }
+        }
     }
 }
