@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
@@ -43,6 +42,10 @@ public class AuthInterceptor implements ContainerRequestFilter {
             if (responseBody.equals("false")) {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
             }
+        }
+        else {
+            System.out.println("No param");
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
 }
