@@ -13,8 +13,6 @@ import org.quarkus.issues.entity.Issue;
 @Path("/issues")
 public class IssueController {
 
-
-
     @GET
     @Path("/get_issues")
     @Produces(MediaType.APPLICATION_JSON)

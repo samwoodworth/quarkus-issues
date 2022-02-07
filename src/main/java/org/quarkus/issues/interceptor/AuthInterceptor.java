@@ -25,11 +25,10 @@ public class AuthInterceptor implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        String responseBody;
         String username = req.getParam("user");
-        System.out.println("Param is: " + username);
 
         if (username != null) {
+            String responseBody;
             URLConnection con = new URL("http://localhost:8081/isAuth?user=" + username).openConnection();
             InputStream inputStream = con.getInputStream();
 
@@ -37,14 +36,12 @@ public class AuthInterceptor implements ContainerRequestFilter {
                 responseBody = scanner.useDelimiter("\\A").next();
             }
 
-            System.out.println("Responsebody is: " + responseBody);
 
             if (responseBody.equals("false")) {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
             }
         }
         else {
-            System.out.println("No param");
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
