@@ -36,13 +36,9 @@ public class AuthInterceptor implements ContainerRequestFilter {
                 responseBody = scanner.useDelimiter("\\A").next();
             }
 
-
-            if (responseBody.equals("false")) {
+            if (responseBody.equals("false"))
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-            }
-        }
-        else {
+        } else
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-        }
     }
 }

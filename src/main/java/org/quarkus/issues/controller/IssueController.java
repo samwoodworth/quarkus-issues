@@ -37,9 +37,8 @@ public class IssueController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Issue issue, @QueryParam("user") String user) {
         Issue.persist(issue);
-        if(issue.isPersistent()) {
+        if(issue.isPersistent())
             return Response.created(URI.create("/issues" + issue.id)).build();
-        }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 }
