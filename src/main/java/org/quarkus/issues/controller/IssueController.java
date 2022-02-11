@@ -33,7 +33,7 @@ public class IssueController {
     }
 
     @POST
-    @Path("/insert_issue")
+    @Path("/add_one")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addIssues(Issue issue, @QueryParam("user") String user) {
@@ -43,15 +43,29 @@ public class IssueController {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-/*    @POST
-    @Path("add_user/{num}")
+    @POST
+    @Path("add_one")
     @PermitAll
-    public Response createN(@PathParam("num") int number) {
-        List<User> userList = new ArrayList<>();
+    @Transactional
+    public Response createOne(@QueryParam("user") String user) {
 
+        long count = Issue.count()+1;
+        Issue.persist(new Issue("Issue #"+count, "Creator #"+count));
+        return Response.created(URI.create("/issues/get_issue/" + count)).build();
+    }
+
+    @POST
+    @Path("add_many/{num}")
+    @PermitAll
+    @Transactional
+    public Response createN(@PathParam("num") int number, @QueryParam("user") String user) {
+        List<Issue> userList = new ArrayList<>();
+        System.out.println(Issue.count());
         for (int n=0; n<number; n++) {
-            userList.add(new User("User #" + n, "user", "user", false));
+            long count = Issue.count()+n+1;
+            userList.add(new Issue("Issue #" + count, "Creator #" + count));
         }
+        Issue.persist(userList);
         return Response.ok().build();
-    }*/
+    }
 }
