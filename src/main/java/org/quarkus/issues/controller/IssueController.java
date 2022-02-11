@@ -1,8 +1,10 @@
 package org.quarkus.issues.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -33,12 +35,23 @@ public class IssueController {
     @POST
     @Path("/insert_issue")
     @Transactional
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Issue issue, @QueryParam("user") String user) {
+    public Response addIssues(Issue issue, @QueryParam("user") String user) {
         Issue.persist(issue);
         if(issue.isPersistent())
-            return Response.created(URI.create("/issues" + issue.id)).build();
+            return Response.created(URI.create("/issues/get_issue/" + issue.id)).build();
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
+
+/*    @POST
+    @Path("add_user/{num}")
+    @PermitAll
+    public Response createN(@PathParam("num") int number) {
+        List<User> userList = new ArrayList<>();
+
+        for (int n=0; n<number; n++) {
+            userList.add(new User("User #" + n, "user", "user", false));
+        }
+        return Response.ok().build();
+    }*/
 }
