@@ -60,12 +60,12 @@ public class IssueController {
     @Transactional
     public Response createN(@PathParam("num") int number, @QueryParam("user") String user) {
         List<Issue> userList = new ArrayList<>();
-        System.out.println(Issue.count());
         for (int n=0; n<number; n++) {
             long count = Issue.count()+n+1;
             userList.add(new Issue("Issue #" + count, "Creator #" + count));
         }
         Issue.persist(userList);
+        System.out.println();
         return Response.ok().build();
     }
 }
