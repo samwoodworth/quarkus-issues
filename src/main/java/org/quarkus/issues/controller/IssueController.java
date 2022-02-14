@@ -59,13 +59,12 @@ public class IssueController {
     @PermitAll
     @Transactional
     public Response createN(@PathParam("num") int number, @QueryParam("user") String user) {
-        List<Issue> userList = new ArrayList<>();
+        List<Issue> issueList = new ArrayList<>();
         for (int n=0; n<number; n++) {
             long count = Issue.count()+n+1;
-            userList.add(new Issue("Issue #" + count, "Creator #" + count));
+            issueList.add(new Issue("Issue #" + count, "Creator #" + count));
         }
-        Issue.persist(userList);
-        System.out.println();
+        Issue.persist(issueList);
         return Response.ok().build();
     }
 }
