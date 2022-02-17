@@ -27,7 +27,7 @@ public class AuthInterceptor implements ContainerRequestFilter {
 
         String username = req.getParam("user");
 
-        if (username != null) {
+/*        if (username != null) {
             String responseBody;
             URLConnection con = new URL("http://localhost:8081/isAuth?user=" + username).openConnection();
             InputStream inputStream = con.getInputStream();
@@ -39,6 +39,6 @@ public class AuthInterceptor implements ContainerRequestFilter {
             if (responseBody.equals("false"))
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         } else
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());*/
     }
 }

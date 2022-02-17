@@ -44,19 +44,7 @@ public class IssueController {
     }
 
     @POST
-    @Path("add_one")
-    @PermitAll
-    @Transactional
-    public Response createOne(@QueryParam("user") String user) {
-
-        long count = Issue.count()+1;
-        Issue.persist(new Issue("Issue #"+count, "Creator #"+count));
-        return Response.created(URI.create("/issues/get_issue/" + count)).build();
-    }
-
-    @POST
     @Path("add_many/{num}")
-    @PermitAll
     @Transactional
     public Response createN(@PathParam("num") int number, @QueryParam("user") String user) {
         List<Issue> issueList = new ArrayList<>();
