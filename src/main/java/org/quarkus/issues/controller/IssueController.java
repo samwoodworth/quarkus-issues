@@ -55,4 +55,13 @@ public class IssueController {
         Issue.persist(issueList);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("add_one")
+    @Transactional
+    public Response createOne(@QueryParam("user") String user) {
+        long count = Issue.count()+1;
+        Issue.persist(new Issue("Issue #"+count, "Creator #"+count));
+        return Response.ok().build();
+    }
 }
