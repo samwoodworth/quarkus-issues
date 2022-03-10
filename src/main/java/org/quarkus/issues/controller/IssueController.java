@@ -4,16 +4,21 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import org.quarkus.issues.entity.Issue;
 
-@Path("/issues")
+@Path("/")
 public class IssueController {
+
+    @Inject
+    Template get_issue;
 
     @GET
     @Path("/get_issues")
@@ -25,11 +30,13 @@ public class IssueController {
 
     @GET
     @Path("/get_issue/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getById(@PathParam("id") Long id, @QueryParam("user") String user) {
-        return Issue.findByIdOptional(id)
+    @Produces(MediaType.TEXT_PLAIN)
+    public TemplateInstance getById(@PathParam("id") Long id, @QueryParam("user") String user) {
+        Issue foundIssue = Issue.findById(id);
+/*
             .map(issue -> Response.ok(issue).build())
-            .orElse(Response.status(Response.Status.NOT_FOUND).build());
+            .orElse(Response.status(Response.Status.NOT_FOUND).build());*/
+        return get_issue.data("get_issue", foundIssue);
     }
 
     @POST
