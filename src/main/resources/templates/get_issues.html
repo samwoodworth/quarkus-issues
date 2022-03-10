@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Issues</title>
+</head>
+<body>
+    {#for issue in issues}
+    <p>Issue ID: #{issue.id ?: 'Unknown'} <p>
+    <p>Issue Description: {issue.issue ?: 'Unknown'} <p>
+    <p>Creator Name: {issue.creatorName ?: 'Unknown'} <p>
+    <br>
+    {/for}
+</body>
+</html>

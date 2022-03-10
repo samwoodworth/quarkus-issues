@@ -20,23 +20,21 @@ public class IssueController {
     @Inject
     Template get_issue;
 
+    @Inject
+    Template get_issues;
+
     @GET
     @Path("/get_issues")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@QueryParam("user") String user) {
-        List<Issue> issues = Issue.listAll();
-        return Response.ok(issues).build();
+    public TemplateInstance getAll(@QueryParam("user") String user) {
+        return get_issues.data("issues", Issue.listAll());
     }
 
     @GET
     @Path("/get_issue/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public TemplateInstance getById(@PathParam("id") Long id, @QueryParam("user") String user) {
-        Issue foundIssue = Issue.findById(id);
-/*
-            .map(issue -> Response.ok(issue).build())
-            .orElse(Response.status(Response.Status.NOT_FOUND).build());*/
-        return get_issue.data("get_issue", foundIssue);
+        return get_issue.data("issue", Issue.findById(id));
     }
 
     @POST
