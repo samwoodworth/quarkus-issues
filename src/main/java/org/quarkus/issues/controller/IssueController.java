@@ -18,27 +18,36 @@ import org.quarkus.issues.entity.Issue;
 public class IssueController {
 
     @Inject
+    Template home;
+
+    @Inject
     Template get_issue;
 
     @Inject
     Template get_issues;
 
     @GET
-    @Path("/get_issues")
+    @Path("home")
+    public TemplateInstance home() {
+        return home.data("home");
+    }
+
+    @GET
+    @Path("get_issues")
     @Produces(MediaType.APPLICATION_JSON)
     public TemplateInstance getAll(@QueryParam("user") String user) {
         return get_issues.data("issues", Issue.listAll());
     }
 
     @GET
-    @Path("/get_issue/{id}")
+    @Path("get_issue/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public TemplateInstance getById(@PathParam("id") Long id, @QueryParam("user") String user) {
         return get_issue.data("issue", Issue.findById(id));
     }
 
     @POST
-    @Path("/add_one")
+    @Path("add_one")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addIssues(Issue issue, @QueryParam("user") String user) {
