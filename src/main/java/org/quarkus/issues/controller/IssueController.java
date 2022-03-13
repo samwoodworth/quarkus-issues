@@ -21,7 +21,10 @@ public class IssueController {
     Template home;
 
     @Inject
-    Template get_issue;
+    Template get_issue_form;
+
+    @Inject
+    Template get_issue_result;
 
     @Inject
     Template get_issues;
@@ -40,10 +43,16 @@ public class IssueController {
     }
 
     @GET
-    @Path("get_issue/{id}")
+    @Path("get_issue")
     @Produces(MediaType.TEXT_PLAIN)
     public TemplateInstance getById(@PathParam("id") Long id, @QueryParam("user") String user) {
-        return get_issue.data("issue", Issue.findById(id));
+        return get_issue_form.data("");
+    }
+
+    @POST
+    @Path("get_issue/result")
+    public TemplateInstance getByIdResult(@FormParam("id") long id) {
+        return get_issue_result.data("issue", Issue.findById(id));
     }
 
     @POST
