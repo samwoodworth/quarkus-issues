@@ -29,6 +29,12 @@ public class IssueController {
     @Inject
     Template get_issues;
 
+    @Inject
+    Template add_one_form;
+
+    @Inject
+    Template add_one_result;
+
     @GET
     @Path("home")
     public TemplateInstance home() {
@@ -45,7 +51,7 @@ public class IssueController {
     @GET
     @Path("get_issue")
     @Produces(MediaType.TEXT_PLAIN)
-    public TemplateInstance getById(@PathParam("id") Long id, @QueryParam("user") String user) {
+    public TemplateInstance getById(@QueryParam("user") String user) {
         return get_issue_form.data("");
     }
 
@@ -55,7 +61,24 @@ public class IssueController {
         return get_issue_result.data("issue", Issue.findById(id));
     }
 
+
+    @GET
+    @Transactional
+    @Path("add_one")
+    public TemplateInstance addCustom() {
+        return add_one_form.data("");
+    }
+
     @POST
+    @Transactional
+    @Path("add_one/result")
+    public TemplateInstance addCustomResult(@FormParam("issue") String issue, @FormParam("creatorName") String creatorName) {
+        Issue newIssue = new Issue(issue, creatorName);
+        Issue.persist(newIssue);
+        return add_one_result.data("newIssue", newIssue);
+    }
+
+/*    @POST
     @Path("add_one")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
@@ -64,7 +87,7 @@ public class IssueController {
         if(issue.isPersistent())
             return Response.created(URI.create("/issues/get_issue/" + issue.id)).build();
         return Response.status(Response.Status.BAD_REQUEST).build();
-    }
+    }*/
 
     @POST
     @Path("add_many/{num}")
