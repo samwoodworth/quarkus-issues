@@ -36,9 +36,6 @@ public class IssueController {
     Template add_one_result;
 
     @Inject
-    Template create_one_form;
-
-    @Inject
     Template create_one_result;
 
     @Inject
