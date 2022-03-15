@@ -35,6 +35,18 @@ public class IssueController {
     @Inject
     Template add_one_result;
 
+    @Inject
+    Template create_one_form;
+
+    @Inject
+    Template create_one_result;
+
+    @Inject
+    Template create_N_form;
+
+    @Inject
+    Template create_N_result;
+
     @GET
     @Path("home")
     public TemplateInstance home() {
@@ -78,36 +90,35 @@ public class IssueController {
         return add_one_result.data("newIssue", newIssue);
     }
 
-/*    @POST
-    @Path("add_one")
+    @GET
     @Transactional
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response addIssues(Issue issue, @QueryParam("user") String user) {
-        Issue.persist(issue);
-        if(issue.isPersistent())
-            return Response.created(URI.create("/issues/get_issue/" + issue.id)).build();
-        return Response.status(Response.Status.BAD_REQUEST).build();
-    }*/
-
-    @POST
-    @Path("add_many/{num}")
-    @Transactional
-    public Response createN(@PathParam("num") int number, @QueryParam("user") String user) {
-        List<Issue> issueList = new ArrayList<>();
-        for (int n=0; n<number; n++) {
-            long count = Issue.count()+n+1;
-            issueList.add(new Issue("Issue #" + count, "Creator #" + count));
-        }
-        Issue.persist(issueList);
-        return Response.ok().build();
+    @Path("create_N")
+    public TemplateInstance createN() {
+        return create_N_form.data("");
     }
 
     @POST
-    @Path("add_one")
     @Transactional
-    public Response createOne(@QueryParam("user") String user) {
+    @Path("create_N/result")
+    public TemplateInstance createNResult(@FormParam("num") int num) {
+        List<Issue> issueList = new ArrayList<>();
+        long count = Issue.count();
+
+        for (int i=0; i<num; i++) {
+            count += 1;
+            issueList.add(new Issue("Issue #" + count, "Creator #" + count));
+        }
+        Issue.persist(issueList);
+        return create_N_result.data("issues", issueList);
+    }
+
+    @POST
+    @Path("create_one")
+    @Transactional
+    public TemplateInstance createOne(@QueryParam("user") String user) {
         long count = Issue.count()+1;
-        Issue.persist(new Issue("Issue #"+count, "Creator #"+count));
-        return Response.ok().build();
+        Issue newIssue = new Issue("Issue #"+count, "Creator #"+count);
+        Issue.persist(newIssue);
+        return create_one_result.data("newIssue", newIssue);
     }
 }
