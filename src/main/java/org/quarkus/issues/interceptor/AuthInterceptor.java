@@ -2,8 +2,6 @@ package org.quarkus.issues.interceptor;
 
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.HttpServerResponse;
-
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
@@ -30,10 +28,5 @@ public class AuthInterceptor implements ContainerRequestFilter {
         if (cookies.isEmpty()) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
-/*        for (Cookie cookie : cookies) {
-            System.out.println("Cookie is: " + cookie.getName());
-            if (!cookie.getName().equals("quarkus-credential"))
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-        }*/
     }
 }
