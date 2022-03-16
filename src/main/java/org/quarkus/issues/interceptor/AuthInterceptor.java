@@ -1,5 +1,6 @@
 package org.quarkus.issues.interceptor;
 
+import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 
@@ -9,36 +10,30 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Scanner;
+import java.util.Set;
 
 @Provider
 public class AuthInterceptor implements ContainerRequestFilter {
 
     @Context
     HttpServerRequest req;
-    @Context
-    HttpServerResponse res;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
+        URLConnection con = new URL("http://localhost:8081/getAuth").openConnection();
 
-        String username = req.getParam("user");
+        //Checking for quarkus-credentials cookie
+        Set<Cookie> cookies = req.cookies("quarkus-credential");
 
-/*        if (username != null) {
-            String responseBody;
-            URLConnection con = new URL("http://localhost:8081/isAuth?user=" + username).openConnection();
-            InputStream inputStream = con.getInputStream();
-
-            try (Scanner scanner = new Scanner(inputStream)) {
-                responseBody = scanner.useDelimiter("\\A").next();
-            }
-
-            if (responseBody.equals("false"))
+        if (cookies.isEmpty()) {
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+        }
+/*        for (Cookie cookie : cookies) {
+            System.out.println("Cookie is: " + cookie.getName());
+            if (!cookie.getName().equals("quarkus-credential"))
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-        } else
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());*/
+        }*/
     }
 }
