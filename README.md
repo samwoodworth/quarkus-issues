@@ -1,7 +1,10 @@
+# Quarkus API Service
+
 # Introduction
 
-This application is the API service for the Issue application, with the main goal of being used to compare against similar frameworks. 
-This application provides endpoints to view issues and create new issues. This service uses the Quarkus framework with RESTEasy Jax-RS.
+This application is the API service for the 
+This application provides endpoints to view issues and create new issues. This service uses the Quarkus framework with RESTEasy Jax-RS 
+for the REST API. Qute is used for the webpage templating. H2 database is used to store issue information.
 
 # Running the Application in Dev Mode
 
