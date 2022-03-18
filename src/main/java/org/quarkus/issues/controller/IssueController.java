@@ -1,15 +1,11 @@
 package org.quarkus.issues.controller;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import org.quarkus.issues.entity.Issue;
@@ -21,28 +17,19 @@ public class IssueController {
     Template home;
 
     @Inject
-    Template get_issue_form;
-
-    @Inject
-    Template get_issue_result;
-
-    @Inject
     Template get_issues;
 
     @Inject
-    Template add_one_form;
+    Template get_issue_form, get_issue_result;
 
     @Inject
-    Template add_one_result;
+    Template add_one_form, add_one_result;
 
     @Inject
     Template create_one_result;
 
     @Inject
-    Template create_N_form;
-
-    @Inject
-    Template create_N_result;
+    Template create_N_form, create_N_result;
 
     @GET
     @Path("home")
@@ -53,23 +40,23 @@ public class IssueController {
     @GET
     @Path("get_issues")
     @Produces(MediaType.APPLICATION_JSON)
-    public TemplateInstance getAll(@QueryParam("user") String user) {
+    public TemplateInstance getAll() {
         return get_issues.data("issues", Issue.listAll());
     }
 
     @GET
     @Path("get_issue")
     @Produces(MediaType.TEXT_PLAIN)
-    public TemplateInstance getById(@QueryParam("user") String user) {
+    public TemplateInstance getById() {
         return get_issue_form.data("");
     }
 
+    //Handle ID not found
     @POST
     @Path("get_issue/result")
     public TemplateInstance getByIdResult(@FormParam("id") long id) {
         return get_issue_result.data("issue", Issue.findById(id));
     }
-
 
     @GET
     @Transactional
@@ -112,7 +99,7 @@ public class IssueController {
     @POST
     @Path("create_one")
     @Transactional
-    public TemplateInstance createOne(@QueryParam("user") String user) {
+    public TemplateInstance createOne() {
         long count = Issue.count()+1;
         Issue newIssue = new Issue("Issue #"+count, "Creator #"+count);
         Issue.persist(newIssue);
