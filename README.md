@@ -13,7 +13,7 @@ Quarkus 2.6.2
 
 ## Running the Application in Dev Mode
 
-The application can be run with the shell script `````./mvnw compile quarkus:dev````` and can be reached at
+The application can be run with ```./mvnw compile quarkus:dev``` and can be reached at
 [localhost:8080/home](localhost:8080/home).
 
 ## Usage
@@ -24,7 +24,7 @@ In the home page, links to each endpoint are available. There are links to view 
 find a certain issue by ID, insert a custom issue with user input, insert an issue with arbitrary data,
 and insert a specified number of issues with arbitrary data.
 
-### Authentication
+## Authentication
 
 Before the API call is made, an interceptor checks for the 'quarkus-credential' cookie. If it is present then the call continues.
 If it does not, then a 401 unauthorized status code and no data will be returned.
